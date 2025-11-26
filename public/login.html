@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ThinkAble | Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>ThinkAble Login</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Login</h2>
+    
+    <!-- Login Form -->
+    <form id="loginForm">
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+      </div>
+      <button class="btn" type="submit">Login</button>
+    </form>
+
+    <p style="margin-top:1rem;font-size:0.9rem;">
+      Hint for testing roles: use an email containing, <strong>parent</strong> or <strong>student</strong>.
+    </p>
+  </main>
+
+<script>
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // Redirect based on server response
+      window.location.href = data.redirect;
+    } else {
+      alert(data.error);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Server error. Try again later.");
+  }
+});
+</script>
+</body>
+</html>
